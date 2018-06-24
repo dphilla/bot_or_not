@@ -10,5 +10,13 @@
   <%= @user.phonenumber %>
 </p>
 
+<p>
+  <strong>Please Enter the verification code you received at <%= @user.phonenumber %></strong>
+
+  form here unless already verified
+  action: to update
+
+</p>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

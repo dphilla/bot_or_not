@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include Verify
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -10,6 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+
   end
 
   # GET /users/new
@@ -24,7 +26,12 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    if Verify.is_valid_phone_number?(user_params['user']['phone_number'])
+      @user = User.new(user_params)
+    else
+      flash["warning"] = 'please enter a valid phone number'
+      redirect_to new_user_path
+    end
 
     respond_to do |format|
       if @user.save
@@ -40,6 +47,13 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    if Verify.valid_confirmation_code?(user_params['user']['verification_code'], user_params['user']['phonenumber'])
+      @user = User.update(user_params) # add hook to record verification in db
+      redirect_to @user, notice: 'you have been verified!'
+    else
+      redirect_to user, notice: 'invalid or expired token'
+    end
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
