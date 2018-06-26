@@ -11,10 +11,13 @@
 </p>
 
 <p>
-  <strong>Please Enter the verification code you received at <%= @user.phonenumber %></strong>
 
-  form here unless already verified
-  action: to update
+<strong>
+  Please Enter the verification code you received at <%= @user.phonenumber %>,
+  <%= form_tag user_path(@user), :method => :put do   %>
+    here: <%= text_field_tag :code %>
+  <% end %>
+</strong>
 
 </p>
 
