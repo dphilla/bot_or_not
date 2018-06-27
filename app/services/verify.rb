@@ -1,5 +1,4 @@
 module Verify
-
   def self.is_valid_phone_number?(phone_number)
     response = Authy::PhoneVerification.start(country_code: 1, phone_number: phone_number)
     response.success?
