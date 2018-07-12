@@ -26,7 +26,6 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    require 'pry'; binding.pry
     if Verify.is_valid_phone_number?(user_params['phonenumber'])
       @user = User.new(user_params)
       @user.save
@@ -40,8 +39,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     if Verify.valid_confirmation_code?(params['code'], params['id'])
-      @user = User.update(verified: true)
-      redirect_to @user, notice: 'you have been verified!'
+      require 'pry'; binding.pry
+      @user.update(verified: true)
+      redirect_to users_path, notice: "#{@user.phonenumber} has been verified!"
     else
       redirect_to new_user_path, notice: 'invalid or expired token'
     end
