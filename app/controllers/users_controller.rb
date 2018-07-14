@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    if Verify.is_valid_phone_number?(user_params['phonenumber'])
+    if valid_phone_number?(user_params['phonenumber'])
       @user = User.new(user_params)
       @user.save
       redirect_to @user, notice: 'You have a valid phone number!'
@@ -38,8 +38,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    if Verify.valid_confirmation_code?(params['code'], params['id'])
-      require 'pry'; binding.pry
+    if valid_confirmation_code?(params['code'], params['id'])
       @user.update(verified: true)
       redirect_to users_path, notice: "#{@user.phonenumber} has been verified!"
     else

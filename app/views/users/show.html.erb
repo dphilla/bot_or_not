@@ -11,14 +11,12 @@
 </p>
 
 <p>
-
 <strong>
-  Please Enter the verification code you received at <%= @user.phonenumber %>,
+  Enter the code you received at <%= @user.phonenumber %> below
   <%= form_tag @user, url: user_path(@user.id), :method => :put  %>
-    here: <%= text_field_tag 'code' %>
+          <%= text_field_tag 'code' %>
           <%= submit_tag 'Submit'%>
 </strong>
-
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
