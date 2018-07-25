@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    if valid_phone_number?(user_params['phonenumber'])
+    if valid_phone_number?(user_params['country_code'], user_params['phone_number'])
       @user = User.new(user_params)
       @user.save
       redirect_to @user, notice: 'You have a valid phone number!'
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   def update
     if valid_confirmation_code?(params['code'], params['id'])
       @user.update(verified: true)
-      redirect_to users_path, notice: "#{@user.phonenumber} has been verified!"
+      redirect_to users_path, notice: "#{@user.phone_number} has been verified!"
     else
       redirect_to new_user_path, notice: 'invalid or expired token'
     end
@@ -64,6 +64,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :phonenumber, :code)
+      params.require(:user).permit(:name, :country_code, :phone_number, :code)
     end
 end
