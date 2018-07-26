@@ -26,23 +26,24 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    @user = User.new(user_params)
     if valid_phone_number?(user_params['country_code'], user_params['phone_number'])
-      @user = User.new(user_params)
       @user.save
       redirect_to @user, notice: 'You have a valid phone number!'
     else
-      redirect_to new_user_path, notice: 'Please enter a valid phone number'
+      flash.notice = 'Please enter a valid phone number'
+      render :new
     end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    if valid_confirmation_code?(params['code'], params['id'])
+   if valid_confirmation_code?(params['code'], @user.country_code, @user.phone_number)
       @user.update(verified: true)
       redirect_to users_path, notice: "#{@user.phone_number} has been verified!"
     else
-      redirect_to new_user_path, notice: 'invalid or expired token'
+      redirect_to @user, notice: 'invalid or expired token'
     end
   end
 

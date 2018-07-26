@@ -7,17 +7,21 @@
 
 <p>
   <strong>Phonenumber:</strong>
-  <%= @user.phonenumber %>
+  <%= @user.phone_number %>
 </p>
 
 <p>
-<strong>
-  Enter the code you received at <%= @user.phonenumber %> below
-  <%= form_tag @user, url: user_path(@user.id), :method => :put  %>
-          <%= text_field_tag 'code' %>
-          <%= submit_tag 'Submit'%>
-</strong>
+<strong>Verified:</strong>
+<%= @user.verified %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<% if !@user.verified %>
+  <h3>Verify your number</h3>
+  <%= form_tag @user, url: user_path(@user.id), :method => :put do %>
+  <%= label_tag :code, "Enter the code you received at #{@user.phone_number} here" %>
+  <%= text_field_tag :code %>
+  <%= submit_tag 'Verfiy' %>
+  <% end %>
+<% end %>
+
 <%= link_to 'Back', users_path %>
