@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       @user.save
       redirect_to @user, notice: 'You have a valid phone number!'
     else
-      flash.notice = 'Please enter a valid phone number'
+      flash.alert = 'Please enter a valid phone number'
       render :new
     end
   end
@@ -65,6 +65,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :country_code, :phone_number, :code)
+      params.require(:user).permit(:name, :country_code, :phone_number)
     end
 end
