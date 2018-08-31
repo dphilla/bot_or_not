@@ -43,7 +43,7 @@ class UsersController < ApplicationController
       @user.update(verified: true)
       redirect_to users_path, notice: "#{@user.phone_number} has been verified!"
     else
-      redirect_to @user, notice: 'invalid or expired token'
+      redirect_to @user, alert: 'invalid or expired token'
     end
   end
 
